@@ -5,13 +5,26 @@ from kafka import KafkaProducer
 
 app = Flask(__name__)
 
+producer = KafkaProducer(value_serializer=lambda v: json.dumps(v).encode("utf-8"))
+
 
 @app.route("/inventory-logs", methods=["POST"])
 def receive_logs():
     log = request.json
-    # print(f"Received log: {json.dumps(log,indent = 4)}")
-    print("Log Received")
+
     # Process and forward the log to the Pub-Sub Model
+    if log["log_level"] == "INFO":
+        producer.send("info_log", log)
+        print(f"Received & Sent log: \n{json.dumps(log,indent = 4)}")
+
+    elif log["log_level"] == "WARN":
+        producer.send("warn_log", log)
+        print(f"Received & Sent log: \n{json.dumps(log,indent = 4)}")
+
+    elif log["log_level"] == "ERROR":
+        producer.send("error_log", log)
+        print(f"Received & Sent log: \n{json.dumps(log,indent = 4)}")
+
     return "Log received", 200
 
 
