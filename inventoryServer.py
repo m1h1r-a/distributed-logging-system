@@ -15,14 +15,17 @@ def receive_logs():
     # Process and forward the log to the Pub-Sub Model
     if log["log_level"] == "INFO":
         producer.send("info_log", log)
+        producer.flush()
         print(f"Received & Sent log: \n{json.dumps(log,indent = 4)}")
 
     elif log["log_level"] == "WARN":
         producer.send("warn_log", log)
+        producer.flush()
         print(f"Received & Sent log: \n{json.dumps(log,indent = 4)}")
 
     elif log["log_level"] == "ERROR":
         producer.send("error_log", log)
+        producer.flush()
         print(f"Received & Sent log: \n{json.dumps(log,indent = 4)}")
 
     return "Log received", 200
