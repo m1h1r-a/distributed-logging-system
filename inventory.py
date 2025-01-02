@@ -11,7 +11,7 @@ from flask import Flask, jsonify, request
 NODE_ID = 1
 
 heartbeat = {
-    "node_id": "3",
+    "node_id": NODE_ID,
     "message_type": "HEARTBEAT",
     "status": "UP",
     "timestamp": f"{datetime.now()}",
@@ -78,6 +78,8 @@ def send_logs():
                 print("Log Sent")
             else:
                 print(f"Failed to send log: {response.status_code}")
+
+            time.sleep(1)
 
     except KeyboardInterrupt:
         print()

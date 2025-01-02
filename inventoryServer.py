@@ -34,6 +34,10 @@ def receive_logs():
 @app.route("/heartbeat", methods=["POST"])
 def receive_heartbeat():
     heartbeat = request.json
+
+    producer.send("inventoryHeartbeat", request.json)
+    producer.flush()
+
     print(
         "--------------------------------RECEIVED HEARTBEAT--------------------------------"
     )
