@@ -14,9 +14,17 @@ for message in consumer:
     log = message.value
 
     if log["log_level"] == "INFO":
-        print(json.dumps(log, indent=4))
-        print()
-        # store log
+
+        pass  # store stuff
 
     else:
-        pass  # send alerts
+
+        if log["log_level"] == "WARN":
+            print("WARNING LOG:")
+            print(json.dumps(log, indent=4))
+            print()
+
+        elif log["log_level"] == "ERROR":
+            print("ERROR LOG:")
+            print(json.dumps(log, indent=4))
+            print()
