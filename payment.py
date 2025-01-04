@@ -17,6 +17,13 @@ heartbeat = {
     "timestamp": f"{datetime.now()}",
 }
 
+registration = {
+    "node_id": NODE_ID,
+    "message_type": "REGISTRATION",
+    "service_name": "PaymentService",
+    "timestamp": f"{datetime.now()}",
+}
+
 
 def random_log():
     num = random.randint(1, 100)

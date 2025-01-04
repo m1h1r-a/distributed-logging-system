@@ -1,4 +1,5 @@
 import json
+import logging
 import threading
 import time
 from datetime import datetime, timedelta
@@ -17,6 +18,14 @@ heartbeat = KafkaConsumer(
     "orderHeartbeat",
     "paymentHeartbeat",
     value_deserializer=lambda y: json.loads(y.decode("utf-8")),
+)
+
+log_file_path = "/home/pes2ug22cs311/distributedlogging/application_logs.log"
+logging.basicConfig(
+    filename=log_file_path,
+    filemode="a",
+    format="%(asctime)s - %(message)s",
+    level=logging.INFO,
 )
 
 node_status = {}
@@ -51,9 +60,7 @@ def receive_logs():
         log = message.value
 
         if log["log_level"] == "INFO":
-
-            pass
-            # Connect to Elasticsearch
+            logging.info(json.dumps(log))
 
         else:
 
@@ -61,11 +68,13 @@ def receive_logs():
                 print("WARNING LOG:")
                 print(json.dumps(log, indent=4))
                 print()
+                logging.warning(json.dumps(log))
 
             elif log["log_level"] == "ERROR":
                 print("ERROR LOG:")
                 print(json.dumps(log, indent=4))
                 print()
+                logging.error(json.dumps(log))
 
 
 if __name__ == "__main__":
